@@ -17,6 +17,7 @@ float globalTotal = 0;//original proccessing code had bad naming practice
 float target = 100.0;
 int samples=0;
 float filterdat[5];
+float impedance;
 
 void setup()
 {
@@ -71,21 +72,20 @@ void loop()
     //Serial.println("v");
   }
   //inject processing code
-  float valueOne = maFilter((float)raw);//rvalue
-  float valueTwo = (float)raw;//rvalue2
-  Serial.println(valueOne);
+  impedance = maFilter((float)raw);//rvalue
+  Serial.println(impedance);//connect Serial display for troubleshooting
   char status = '0';
   if (samples < 10) {
-    globalTotal = globalTotal + valueOne;
+    globalTotal = globalTotal + impedance;
     samples++;
     status = '1';
   }  else
   {
     target = (globalTotal / samples) + 200;
     status = '2';
-    valueOne = map(valueOne, 0, 1005, 0, 1015);
+    impedance = map(impedance, 0, 1005, 0, 1015);
     //the speaker draws out some of the current, so a simple software amplifier is added
-    if (valueOne >= target)
+    if (impedance >= target)
     {
       tone(speakerPort, 440);
       digitalWrite(13, HIGH);
