@@ -16,12 +16,13 @@ float buffer = 0;
 float globalTotal = 0;//original proccessing code had bad naming practice
 float target = 100.0;
 int samples=0;
-float filterdat[5];
+float filterdat[3];
 
 void setup()
 {
   Serial.begin(9600);
   pinMode(13, OUTPUT);
+  pinMode(speakerPort, OUTPUT);
   for (int i = 14; i < 53; i++)
   {
     pinMode(i, INPUT_PULLUP);
@@ -90,7 +91,8 @@ void loop()
       tone(speakerPort, FREQUENCY);
       digitalWrite(13, HIGH);
     } else {
-      digitalWrite(speakerPort, LOW);
+      noTone(speakerPort);
+      digitalWrite(speakerPort,LOW);
       digitalWrite(13, LOW);
     }
   }
@@ -98,12 +100,12 @@ void loop()
 
 float maFilter(float data) {
   double total = 0;
-  for (int i = 2; i < 5; i++)
+  for (int i = 2; i < 3; i++)
   {
     filterdat[i - 1] = filterdat[i];
     total = total + filterdat[i];
   }
-  total = total / 3;
-  filterdat[4] = data;
+  total = total;
+  filterdat[2] = data;
   return (float)total;
 }
