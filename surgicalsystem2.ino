@@ -1,4 +1,4 @@
-#define FREQUENCY 440
+#define FREQUENCY 2000
 #define DURATION 1000
 #define speakerPort 11
 
@@ -17,7 +17,6 @@ float globalTotal = 0;//original proccessing code had bad naming practice
 float target = 100.0;
 int samples=0;
 float filterdat[5];
-float impedance;
 
 void setup()
 {
@@ -72,20 +71,21 @@ void loop()
     //Serial.println("v");
   }
   //inject processing code
-  impedance = maFilter((float)raw);//rvalue
-  Serial.println(impedance);//connect Serial display for troubleshooting
+  float valueOne = maFilter((float)raw);//rvalue
+  float valueTwo = (float)raw;//rvalue2
+  Serial.println(valueOne);
   char status = '0';
   if (samples < 10) {
-    globalTotal = globalTotal + impedance;
+    globalTotal = globalTotal + valueOne;
     samples++;
     status = '1';
   }  else
   {
     target = (globalTotal / samples) + 200;
     status = '2';
-    impedance = map(impedance, 0, 1005, 0, 1015);
+    valueOne = map(valueOne, 0, 1005, 0, 1015);
     //the speaker draws out some of the current, so a simple software amplifier is added
-    if (impedance >= target)
+    if (valueOne >= target)
     {
       tone(speakerPort, 440);
       digitalWrite(13, HIGH);
