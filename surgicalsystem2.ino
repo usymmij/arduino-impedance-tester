@@ -87,10 +87,10 @@ void loop()
     //the speaker draws out some of the current, so a simple software amplifier is added
     if (valueOne >= target)
     {
-      tone(speakerPort, 440);
+      tone(speakerPort, FREQUENCY);
       digitalWrite(13, HIGH);
     } else {
-      noTone(speakerPort);
+      digitalWrite(speakerPort, LOW);
       digitalWrite(13, LOW);
     }
   }
