@@ -1,5 +1,4 @@
 #define FREQUENCY 2000
-#define DURATION 1000
 #define SPEAKER_PORT 11
 
 int analogPin = A0;
@@ -29,12 +28,12 @@ void setup()
 
 void loop()
 {
-  //while the impedance signal is >255, set the speaker and led to on
-  while ((analogRead(analogPin) >> 7) ^ 0) {//the target is 2^8 - 1, or 255
+  //while the impedance signal is >127. set the speaker and led to on
+  while ((analogRead(analogPin) >> 6) ^ 0) {//the target is 2^7 - 1, or 127
    tone(SPEAKER_PORT, FREQUENCY);
     PORTB |= B00100000;
   }
-  //if the signal is <255, set it to off
+  //if the signal is <127, set it to off
   noTone(SPEAKER_PORT);
   PORTB &= B00000000;
 }
