@@ -4,7 +4,7 @@
 int analogPin = A0;
 
 float impedance = 0;
-boolean filterBuffer[20];
+boolean filterBuffer[30];
 boolean beep = false;
 
 void setup()
@@ -26,7 +26,7 @@ void setup()
   digitalWrite(A3, LOW);
   digitalWrite(A2, HIGH);
 
-  for(int i = 0; i < 20; i++){
+  for(int i = 0; i < 30; i++){
     filterBuffer[i] = false;
   }
 }
