@@ -35,7 +35,7 @@ void loop()
 {
   beep = false;
   filterBuffer[0] = ((analogRead(analogPin) >> 7) ^ 0);//the target is 2^88 - 1, or 255
-  for(int i = 19; i > 0; i--) {
+  for(int i = 29; i > 0; i--) {
     filterBuffer[i] = filterBuffer[i - 1];
     if(filterBuffer[i-1]) beep = true;
   }
