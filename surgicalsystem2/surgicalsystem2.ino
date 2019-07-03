@@ -1,11 +1,11 @@
 #define FREQUENCY 2000
-#define DURATION 1000
 #define SPEAKER_PORT 11
 
 int analogPin = A0;
 
 float impedance = 0;
-float filterBuffer[3];
+boolean filterBuffer[20];
+boolean beep = false;
 
 void setup()
 {
@@ -25,16 +25,26 @@ void setup()
   //set refrence pins
   digitalWrite(A3, LOW);
   digitalWrite(A2, HIGH);
+
+  for(int i = 0; i < 20; i++){
+    filterBuffer[i] = false;
+  }
 }
 
 void loop()
 {
-  //while the impedance signal is >255, set the speaker and led to on
-  while ((analogRead(analogPin) >> 7) ^ 0) {//the target is 2^8 - 1, or 255
+  beep = false;
+  filterBuffer[0] = ((analogRead(analogPin) >> 7) ^ 0);//the target is 2^88 - 1, or 255
+  for(int i = 19; i > 0; i--) {
+    filterBuffer[i] = filterBuffer[i - 1];
+    if(filterBuffer[i-1]) beep = true;
+  }
+  if (beep) {
    tone(SPEAKER_PORT, FREQUENCY);
     PORTB |= B00100000;
-  }
-  //if the signal is <255, set it to off
+    delay(5);
+  } else {
   noTone(SPEAKER_PORT);
   PORTB &= B00000000;
+  }
 }
